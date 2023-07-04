@@ -1,0 +1,6 @@
+# Requirements without Version Specifiers
+pytz
+
+# Requirements with Version Specifiers
+arxiv==1.4.7
+slackweb==1.0.5
