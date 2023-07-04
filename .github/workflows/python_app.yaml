@@ -5,8 +5,8 @@ on:
   schedule:
     - cron: '0 21 * * *'  # GitHub Actions上ではUTC timezone
   # デバッグ用
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
 
 jobs:
   build:
