@@ -7,6 +7,17 @@ import arxiv
 import slackweb
 
 
+def format_summary(summary):
+    formatted_summary = ''
+    for line in summary.splitlines():
+        if line.endswith('-'):
+            formatted_summary += line[:-1]
+        else:
+            formatted_summary += line + ' '
+    formatted_summary = formatted_summary.rstrip()
+    return formatted_summary
+
+
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
 
 # コマンドライン引数のパース
@@ -36,7 +47,7 @@ slack = slackweb.Slack(url=SLACK_WEBHOOK_URL)
 for paper in papers.results():
     title = paper.title
     pdf = paper.pdf_url
-    summary = ''.join(paper.summary.splitlines())
+    summary = format_summary(paper.summary)
 
     attachments = []
     content = {
