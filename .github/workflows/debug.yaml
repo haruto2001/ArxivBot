@@ -3,6 +3,9 @@ name: ArxivBot
 on:
   push:
     branches: [ main ]
+    paths:
+      - "src/main.py"
+      - ".github/workflows/debug.yaml"
 
 jobs:
   run:
