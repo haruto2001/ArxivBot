@@ -10,10 +10,9 @@ import slackweb
 def format_summary(summary):
     formatted_summary = ''
     for line in summary.splitlines():
-        if line.endswith('-'):
-            formatted_summary += line[:-1]
-        else:
-            formatted_summary += line + ' '
+        formatted_summary += line
+        if not line.endswith('-'):
+            formatted_summary += ' '
     formatted_summary = formatted_summary.rstrip()
     return formatted_summary
 
