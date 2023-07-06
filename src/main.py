@@ -11,7 +11,7 @@ SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
 
 # コマンドライン引数のパース
 parser = argparse.ArgumentParser()
-parser.add_argument('--max_results', default=30, help='取得する論文の最大件数を指定してください')
+parser.add_argument('--max_results', default=30, help='取得する論文の最大件数を指定してください', type=int)
 args = parser.parse_args()
 
 # 検索範囲: arXivの更新に遅延があるため，現在から1週間前の直近24時間に設定
@@ -24,7 +24,12 @@ dt_end = (dt_now - datetime.timedelta(days=7)).strftime('%Y%m%d')
 query = f'cat:(cs.CL OR cs.CV) AND submittedDate:[{dt_start} TO {dt_end}]'
 
 # 条件に合う最新の論文を新しいものから順に取得
-papers = arxiv.Search(query=query, max_results=int(args.max_results), sort_by=arxiv.SortCriterion.SubmittedDate, sort_order=arxiv.SortOrder.Descending)
+papers = arxiv.Search(
+    query=query,
+    max_results=args.max_results,
+    sort_by=arxiv.SortCriterion.SubmittedDate,
+    sort_order=arxiv.SortOrder.Descending
+)
 
 slack = slackweb.Slack(url=SLACK_WEBHOOK_URL)
 
