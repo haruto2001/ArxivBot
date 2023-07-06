@@ -1,12 +1,18 @@
 import os
 import datetime
 import time
+import argparse
 import pytz
 import arxiv
 import slackweb
 
 
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
+
+# コマンドライン引数のパース
+parser = argparse.ArgumentParser()
+parser.add_argument('--max_results', default=30, help='取得する論文の最大件数を指定してください')
+args = parser.parse_args()
 
 # 検索範囲: arXivの更新に遅延があるため，現在から1週間前の直近24時間に設定
 dt_now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
@@ -15,13 +21,10 @@ dt_end = (dt_now - datetime.timedelta(days=7)).strftime('%Y%m%d')
 
 # 取得する論文のカテゴリを限定し，検索範囲を指定
 # カテゴリ一覧: https://arxiv.org/category_taxonomy
-query = f'cat:(cs.AI OR cs.CL OR cs.CV) AND submittedDate:[{dt_start} TO {dt_end}]'
-
-# 一度に取得する論文数の最大値
-max_results = 10
+query = f'cat:(cs.CL OR cs.CV) AND submittedDate:[{dt_start} TO {dt_end}]'
 
 # 条件に合う最新の論文を新しいものから順に取得
-papers = arxiv.Search(query=query, max_results=max_results, sort_by=arxiv.SortCriterion.SubmittedDate, sort_order=arxiv.SortOrder.Descending)
+papers = arxiv.Search(query=query, max_results=int(args.max_results), sort_by=arxiv.SortCriterion.SubmittedDate, sort_order=arxiv.SortOrder.Descending)
 
 slack = slackweb.Slack(url=SLACK_WEBHOOK_URL)
 
