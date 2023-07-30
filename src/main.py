@@ -17,6 +17,17 @@ def format_summary(summary):
     return formatted_summary
 
 
+def notify_slack(title, pretext, text):
+    attachments = []
+    content = {
+        'title': title,
+        'pretext': pretext,
+        'text' text
+    }
+    attachments.append(content)
+    slack.notify(attachments=attachments)
+
+
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
 
 # コマンドライン引数のパース
@@ -45,17 +56,10 @@ slack = slackweb.Slack(url=SLACK_WEBHOOK_URL)
 
 for paper in papers.results():
     title = paper.title
-    pdf = paper.pdf_url
+    pdf_url = paper.pdf_url
     summary = format_summary(paper.summary)
 
-    attachments = []
-    content = {
-        'title': title,
-        'pretext': pdf,
-        'text': summary
-    }
-    attachments.append(content)
-    slack.notify(attachments=attachments)
+    notify_slack(title=title, pretext=pdf_url, text=summary)
 
     # 原則として，Incoming Webhookの呼び出しは1秒あたり1回まで
     time.sleep(1)
