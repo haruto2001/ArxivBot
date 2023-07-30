@@ -22,7 +22,7 @@ def notify_slack(title, pretext, text):
     content = {
         'title': title,
         'pretext': pretext,
-        'text' text
+        'text': text
     }
     attachments.append(content)
     slack.notify(attachments=attachments)
