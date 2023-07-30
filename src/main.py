@@ -31,7 +31,7 @@ dt_end = (dt_now - datetime.timedelta(days=7)).strftime('%Y%m%d')
 
 # 取得する論文のカテゴリを限定し，検索範囲を指定
 # カテゴリ一覧: https://arxiv.org/category_taxonomy
-query = f'((diagram AND generation) OR text-to-diagram OR (figure AND generation) OR text-to-figure OR (code AND generation) OR text-to-code) AND cat:(cs.CL OR cs.CV OR cs.PL) AND submittedDate:[{dt_start} TO {dt_end}]'
+query = f'abs:(diagram generation OR text-to-diagram OR figure generation OR text-to-figure OR code generation OR text-to-code) AND cat:(cs.CL OR cs.CV OR cs.PL) AND submittedDate:[{dt_start} TO {dt_end}]'
 
 # 条件に合う最新の論文を新しいものから順に取得
 papers = arxiv.Search(
