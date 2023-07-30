@@ -24,4 +24,4 @@ jobs:
       - name: Run ArxivBot
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEBUG }}
-        run: python src/main.py --max_results=30
+        run: python src/main.py --max_results=3
