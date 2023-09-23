@@ -22,5 +22,8 @@ Slackに論文を投稿するために，ワークスペースにIncoming Webhoo
 ### Step3. Webhook URLをGitHub Actions Secretsに登録
 Step2で発行したWebhook URLをリポジトリ内で環境変数として使用するために，GitHub Actions Secretsから登録します．自分のリポジトリ内のSettings > Secrets and variables > ActionsからNew repository secretボタンを押して追加してください．
 
+>**Note**
+>公開リポジトリでは，60日間リポジトリでの活動が無い場合，スケジュールされたワークフローは自動的に無効になります．それを回避するために，`.github/workflows/extend.yaml`によって毎月1日に自動的にcommit & pushが実行されるようになっています．このとき内部でGitの設定を行っているため，メールアドレスとユーザ名を環境変数として設定する必要があります．この機能を利用したい場合には，Webhook URLの設定と同様の手順でメールアドレスとユーザ名を環境変数として設定してください．
+
 ## 設定の変更
 論文の検索条件，投稿時間は自由に設定することができます．論文の検索条件を変更したい場合は`src/main.py`を変更してください．投稿時間を変更したい場合は`.github/workflows/python_app.yaml`の`schedule`の部分を変更してください．
